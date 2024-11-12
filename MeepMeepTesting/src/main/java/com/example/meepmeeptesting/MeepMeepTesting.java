@@ -19,12 +19,12 @@ public class MeepMeepTesting {
                         .splineTo(new Vector2d(56, 56), Math.PI / 2)
                         .splineTo(new Vector2d(60, 24), Math.PI / 2)
                         .turn(Math.toRadians(90))
-                        .lineTo(new Vector2d(50,24))
+                        .splineTo(new Vector2d(50,24), Math.PI / 2)
                         .splineTo(new Vector2d(56, 56), Math.PI / 2)
                         .splineTo(new Vector2d(60, 24), Math.PI / 2)
                         .turn(Math.toRadians(-90))
                         .turn(Math.toRadians(180))
-                        .lineTo(new Vector2d(50,24))
+                        .splineTo(new Vector2d(50,24), Math.PI / 2)
                         .splineTo(new Vector2d(56, 56), Math.PI / 2)
                         .build());
 
