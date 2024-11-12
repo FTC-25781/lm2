@@ -104,7 +104,7 @@ public class ConceptExploringIMUOrientation extends LinearOpMode {
             } else {
                 telemetry.addData("Yaw", "Press Y (triangle) on Gamepad to reset.\n");
             }
-
+//
             // Check to see if new Logo Direction is requested
             if (gamepad1.left_bumper || gamepad1.right_bumper) {
                 if (!justChangedLogoDirection) {
