@@ -26,8 +26,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
 
-@Autonomous(name = "Auto Test", group = "")
-public class AutoTest extends LinearOpMode {
+@Autonomous(name = "Auto Test2", group = "")
+public class AutoTest2 extends LinearOpMode {
 
     MecanumDrive drive;
     public DcMotor slideMotor;
@@ -60,48 +60,13 @@ public class AutoTest extends LinearOpMode {
         runtime.reset();
         waitForStart();
 
-        Action traj1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-//                .stopAndAdd()
-                .strafeToLinearHeading(new Vector2d(82,47.95), 0)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-                .strafeToLinearHeading(new Vector2d(98.86, 48.91), 90)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-                .build();
-
-//        Action traj2 = drive.actionBuilder(new Pose2d(0,26, 45))
-//                .strafeToLinearHeading(new Vector2d(10,26), 0)
-//                .build();
-////
-//      Action traj3 = drive.actionBuilder(new Pose2d(10, 26, 0))
-//              .strafeToLinearHeading(new Vector2d(0,26), 45)
-//                .build();
-////
-//        Action traj4 = drive.actionBuilder(new Pose2d(10, 26, 45))
-//                .strafeToLinearHeading(new Vector2d(20,33), 0)
-//                .build();
-////
-//        Action traj5 = drive.actionBuilder(new Pose2d(10, 26, 45))
-//                .strafeToLinearHeading(new Vector2d(0,26), 45)
-//                .build();
-//
-//        Action traj6 = drive.actionBuilder(new Pose2d(10, 26, 45))
-//                .strafeToLinearHeading(new Vector2d(20,33), 90)
-//                .build();
-
-        Actions.runBlocking(new SequentialAction(
-
-                traj1
-
-        ));
 
         while (opModeIsActive()) {
 
 
-
+            telemetry.addData("Position", drive.pose);
             telemetry.update();
+            drive.updatePoseEstimate();
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.fieldOverlay().setStroke("#3F51B5");
