@@ -59,7 +59,7 @@ public class AutoTest extends LinearOpMode {
 
         runtime.reset();
         waitForStart();
-
+//
         Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
                 .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //first time going under basket
                 .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
