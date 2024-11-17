@@ -61,14 +61,13 @@ public class AutoTest extends LinearOpMode {
         waitForStart();
 
         Action traj1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-//                .stopAndAdd()
-                .strafeToLinearHeading(new Vector2d(82,47.95), 0)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
-                .strafeToLinearHeading(new Vector2d(98.86, 48.91), 90)
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45)
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //first time going under basket
+                .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
                 .build();
 
 //        Action traj2 = drive.actionBuilder(new Pose2d(0,26, 45))
