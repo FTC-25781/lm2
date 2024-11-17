@@ -60,21 +60,21 @@ public class AutoTest extends LinearOpMode {
         runtime.reset();
         waitForStart();
 
-//        Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
-//                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //first time going under basket
-//                .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
-//                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
-//                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
-//                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
-//                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
-//                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
-//                .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)
-//                .strafeToLinearHeading(new Vector2d(122.77, 26.01), 0)
-//                .build();
-
-        Action bluered2 = drive.actionBuilder(new Pose2d(63.32,19.15, 0))
-                .strafeToLinearHeading(new Vector2d(62.81,-18.34), 0)
+        Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //first time going under basket
+                .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)
+                .strafeToLinearHeading(new Vector2d(122.77, 26.01), 0)
                 .build();
+
+//        Action bluered2 = drive.actionBuilder(new Pose2d(63.32,19.15, 0))
+//                .strafeToLinearHeading(new Vector2d(62.81,-18.34), 0)
+//                .build();
 ////
 //      Action traj3 = drive.actionBuilder(new Pose2d(10, 26, 0))
 //              .strafeToLinearHeading(new Vector2d(0,26), 45)
@@ -94,7 +94,7 @@ public class AutoTest extends LinearOpMode {
 
         Actions.runBlocking(new SequentialAction(
 
-                bluered2
+                bluered1
 
         ));
 
