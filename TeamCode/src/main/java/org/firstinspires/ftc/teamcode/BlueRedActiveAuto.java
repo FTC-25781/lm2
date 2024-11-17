@@ -26,8 +26,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
 
-@Autonomous(name = "Auto Test2", group = "")
-public class AutoTest2 extends LinearOpMode {
+@Autonomous(name = "Blue/Red Active Auto", group = "")
+public class BlueRedActiveAuto extends LinearOpMode {
 
     MecanumDrive drive;
     public DcMotor slideMotor;
@@ -54,19 +54,37 @@ public class AutoTest2 extends LinearOpMode {
 
         // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-        drive = new MecanumDrive(hardwareMap, new Pose2d(63.32,19.15, 0));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(62.8, 20.5, 0));
 
 
         runtime.reset();
         waitForStart();
 
+        Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //first time going under basket
+                .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
+                .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)
+                .strafeToLinearHeading(new Vector2d(122.77, 26.01), 0)
+                .build();
+
+
+
+        Actions.runBlocking(new SequentialAction(
+
+                bluered1
+
+        ));
 
         while (opModeIsActive()) {
 
 
-            telemetry.addData("Position", drive.pose);
+
             telemetry.update();
-            drive.updatePoseEstimate();
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.fieldOverlay().setStroke("#3F51B5");

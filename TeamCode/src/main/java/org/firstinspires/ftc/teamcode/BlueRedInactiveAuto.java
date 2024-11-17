@@ -26,8 +26,8 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 
 
-@Autonomous(name = "Auto Test2", group = "")
-public class AutoTest2 extends LinearOpMode {
+@Autonomous(name = "Blue/Red Inactive Auto", group = "")
+public class BlueRedInactiveAuto extends LinearOpMode {
 
     MecanumDrive drive;
     public DcMotor slideMotor;
@@ -54,19 +54,30 @@ public class AutoTest2 extends LinearOpMode {
 
         // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-        drive = new MecanumDrive(hardwareMap, new Pose2d(63.32,19.15, 0));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(62.8, 20.5, 0));
 
 
         runtime.reset();
         waitForStart();
 
 
+        Action bluered2 = drive.actionBuilder(new Pose2d(63.32,19.15, 0))
+                .strafeToLinearHeading(new Vector2d(62.81,-18.34), 0)
+                .build();
+////
+//
+
+        Actions.runBlocking(new SequentialAction(
+
+                bluered2
+
+        ));
+
         while (opModeIsActive()) {
 
 
-            telemetry.addData("Position", drive.pose);
+
             telemetry.update();
-            drive.updatePoseEstimate();
 
             TelemetryPacket packet = new TelemetryPacket();
             packet.fieldOverlay().setStroke("#3F51B5");
