@@ -19,10 +19,19 @@ import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoImplEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystem.deposit.DepositClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.deposit.DepositV4BSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.deposit.DepositSlideSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.intake.IntakeV4BSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.intake.IntakeClawSubsystem;
+import org.firstinspires.ftc.teamcode.subsystem.intake.IntakeSlideSubsystem;
+import org.firstinspires.ftc.teamcode.blockDetection;
 
 
 
@@ -30,21 +39,20 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 public class BlueRedActiveAuto extends LinearOpMode {
 
     MecanumDrive drive;
-    public DcMotor slideMotor;
-    public ServoImplEx flipLeftIntake;
-    public ServoImplEx flipRightIntake;
-
-
-    public CRServoImplEx intakeMotor;
-
-
-    public ServoImplEx flipRightDeposit;
-    public ServoImplEx flipLeftDeposit;
-    public ServoImplEx pitch;
-    public ServoImplEx claw;
-
-    public DcMotorImplEx slidesRight;
-    public DcMotorImplEx slidesLeft;
+    //intake hardware
+    public DcMotor hsmot;
+    public Servo clsrv;
+    public Servo orsrv;
+    public Servo wsrv1;
+    public Servo wsrv2;
+    public DigitalChannel inltsw;
+    //deposit hardware
+    public DcMotor vsmot;
+    public DcMotor vsmot2;
+    public Servo dclsrv;
+    public Servo dwsrv1;
+    public Servo dwsrv2;
+    public DigitalChannel dpltsw;
 
     ElapsedTime runtime = new ElapsedTime();
 
@@ -62,6 +70,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
 
         Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
                 .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //first time going under basket
+//                .stopAndAdd()
                 .strafeToLinearHeading(new Vector2d(82,47.95), 0) //first sample
                 .strafeToLinearHeading(new Vector2d(72.0, 54.7), 45) //going back under basket
                 .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
