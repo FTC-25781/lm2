@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -51,6 +53,11 @@ public class Robot {
         intakeV4B.setWristDropPosition();
         intakeSlide.retractMainSlide();
     }
+//    public Action startIntakeeDrop() {
+//        new SequentialAction(
+//          intakeV4B.wristPositionAction()
+//        );
+//    }
 
     public void startDepositPickup() {
         intakeClaw.openClaw();
