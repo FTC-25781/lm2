@@ -71,7 +71,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
         // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(62.8, 20.5, 0));
-//        robot = new Robot(hardwareMap, telemetry);
+        robot = new Robot(hardwareMap, telemetry);
 
 
         runtime.reset();
