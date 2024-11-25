@@ -25,19 +25,27 @@ import java.util.List;
 public class blockDetection extends LinearOpMode {
     private OpenCvCamera webcam;
     private Servo clawServo;
+    private Servo servo1;
+    private Servo servo2;
 
     @Override
     public void runOpMode() {
         // Initialize hardware
+        servo1 = hardwareMap.get(Servo.class, "wsrv1");
+        servo2 = hardwareMap.get(Servo.class, "wsrv2");
+        servo1.setDirection(Servo.Direction.REVERSE);
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(
                 hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-        clawServo = hardwareMap.get(Servo.class, "clawServo");
+        clawServo = hardwareMap.get(Servo.class, "orsrv");
 
         // Reset the claw servo to 0.0 at the start of the OpMode
         clawServo.setPosition(0.0);
+        servo1.setPosition(0.2); // Adjust for clockwise
+        servo2.setPosition(0.2); // Adjust for counterclockwise
         sleep(500);
 
         webcam.setPipeline(new BlockDetectionPipeline());
@@ -56,7 +64,15 @@ public class blockDetection extends LinearOpMode {
 
         waitForStart();
 
+
         while (opModeIsActive()) {
+            if(gamepad1.a) {
+                servo1.setPosition(gamepad1.left_stick_y * 0.5); // Adjust for clockwise
+                servo2.setPosition(gamepad1.left_stick_y * 0.5);
+            }
+            telemetry.addData("y value", gamepad1.left_stick_y);
+            telemetry.addData("Servo1 Position", servo1.getPosition());
+            telemetry.addData("Servo2 Position", servo2.getPosition());
             telemetry.update();
             sleep(50);
         }

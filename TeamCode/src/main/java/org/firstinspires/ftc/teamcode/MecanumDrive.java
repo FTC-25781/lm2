@@ -236,10 +236,10 @@ public final class MecanumDrive {
 
         // TODO: make sure your config has motors with these names (or change them)
         //   see https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html
-        leftFront = hardwareMap.get(DcMotorEx.class, "rightBack"); //Fl
-        leftBack = hardwareMap.get(DcMotorEx.class, "rightFront");  //Bl
-        rightBack = hardwareMap.get(DcMotorEx.class, "leftFront"); //Br
-        rightFront = hardwareMap.get(DcMotorEx.class, "leftBack");  //Fr
+        leftFront = hardwareMap.get(DcMotorEx.class, "right_back"); //Fl
+        leftBack = hardwareMap.get(DcMotorEx.class, "right_front");  //Bl
+        rightBack = hardwareMap.get(DcMotorEx.class, "left_front"); //Br
+        rightFront = hardwareMap.get(DcMotorEx.class, "left_back");  //Fr
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
