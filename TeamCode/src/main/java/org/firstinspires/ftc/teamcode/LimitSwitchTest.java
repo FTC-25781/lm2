@@ -107,7 +107,7 @@ public class LimitSwitchTest extends LinearOpMode {
                 hsmot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 hsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-
+//
             if(gamepad1.a) {
                 hsmot.setTargetPosition(-4994);
                 hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
