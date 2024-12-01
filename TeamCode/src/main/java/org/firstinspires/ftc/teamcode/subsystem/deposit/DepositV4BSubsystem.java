@@ -9,12 +9,12 @@ public class DepositV4BSubsystem implements Subsystem {
     private final Servo wristServo1;
     private final Servo wristServo2;
 
-    private static final double WRIST_1_DEFAULT = 1.0;
-    private static final double WRIST_2_DEFAULT = 1.0;
-    private static final double WRIST_1_DROP = 0.15;
-    private static final double WRIST_2_DROP = 0.1;
-    private static final double WRIST_1_PICKUP = 0.57;
-    private static final double WRIST_2_PICKUP = 0.45;
+    private static final double DEPOSIT_WRIST_1_SPECIMEN_DROP = 0;
+    private static final double DEPOSIT_WRIST_2_SPECIMEN_DROP = 0;
+    private static final double DEPOSIT_WRIST_1_DROP = 1.0;
+    private static final double DEPOSIT_WRIST_2_DROP = 1.0;
+    private static final double DEPOSIT_WRIST_1_PICKUP = 0.27;
+    private static final double DEPOSIT_WRIST_2_PICKUP = 0.27;
 
     public DepositV4BSubsystem(HardwareMap hardwareMap) {
         wristServo1 = hardwareMap.get(Servo.class, "dwsrv1");
@@ -24,15 +24,11 @@ public class DepositV4BSubsystem implements Subsystem {
     }
 
     public void setWristDropPosition() {
-        setWristPosition(WRIST_1_DROP, WRIST_2_DROP);
+        setWristPosition(DEPOSIT_WRIST_1_DROP, DEPOSIT_WRIST_2_DROP);
     }
 
     public void setWristPickPosition() {
-        setWristPosition(WRIST_1_PICKUP, WRIST_2_PICKUP);
-    }
-
-    public void setWristDefaultPosition() {
-        setWristPosition(WRIST_1_DEFAULT, WRIST_2_DEFAULT);
+        setWristPosition(DEPOSIT_WRIST_1_PICKUP, DEPOSIT_WRIST_2_PICKUP);
     }
 
     private void setWristPosition(double pos1, double pos2) {

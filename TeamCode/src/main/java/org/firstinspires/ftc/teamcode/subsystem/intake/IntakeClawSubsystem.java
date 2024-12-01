@@ -10,28 +10,46 @@ public class IntakeClawSubsystem {
 
     private static final double CLAW_OPEN_POS = 0.69;
     private static final double CLAW_CLOSED_POS = 0.9;
+    private double currentOrientation = 0.0;
 
     public IntakeClawSubsystem(HardwareMap hardwareMap) {
         clawServo = hardwareMap.get(Servo.class, "clsrv");
         orientationServo = hardwareMap.get(Servo.class, "orsrv");
+
+        if (clawServo == null || orientationServo == null) {
+            throw new IllegalArgumentException("Failed to initialize one or more servos.");
+        }
     }
 
+    // Moves orientation servo to preset position
     public void runToPreset() {
-        setOrientation(1.0);
+        orientationServo.setPosition(1.0);
     }
 
-    public void setOrientation(double position) {
-        orientationServo.setPosition(clamp(position));
+    // Increases orientation by 10 degrees, capping at 90 degrees
+    public void setOrientationIncrease() {
+        currentOrientation = Math.min(currentOrientation + 10.0, 90.0);
+        double servoPosition = currentOrientation / 180.0;
+        orientationServo.setPosition(clamp(servoPosition));
     }
 
+    public void setOrientationDecrease() {
+        currentOrientation = Math.min(currentOrientation - 10.0, 90.0);
+        double servoPosition = currentOrientation / 180.0;
+        orientationServo.setPosition(clamp(servoPosition));
+    }
+
+    // Opens the claw to a pre-defined position
     public void openClaw() {
         clawServo.setPosition(CLAW_OPEN_POS);
     }
 
+    // Closes the claw to a pre-defined position
     public void closeClaw() {
         clawServo.setPosition(CLAW_CLOSED_POS);
     }
 
+    // Clamps a value between 0.0 and 1.0 to ensure valid servo positions
     private double clamp(double value) {
         return Math.max(0.0, Math.min(1.0, value));
     }

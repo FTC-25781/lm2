@@ -10,14 +10,14 @@ public class IntakeV4BSubsystem {
     public final Servo wristServo1;
     public final Servo wristServo2;
 
-    private static final double POSITION_INCREMENT = 0.01;
+    private static final double INTAKE_POSITION_INCREMENT = 0.01;
 
-    private static final double WRIST_1_DEFAULT = 0.4;
-    private static final double WRIST_2_DEFAULT = 0.4;
-    private static final double WRIST_1_DROP = 0.25;
-    private static final double WRIST_2_DROP = 0.25;
-    private static final double WRIST_1_PICKUP = 0.55;
-    private static final double WRIST_2_PICKUP = 0.55;
+    private static final double INTAKE_WRIST_1_DEFAULT = 0.2;
+    private static final double INTAKE_WRIST_2_DEFAULT = 0.2;
+    private static final double INTAKE_WRIST_1_DROP = 0.4;
+    private static final double INTAKE_WRIST_2_DROP = 0.4;
+    private static final double INTAKE_WRIST_1_PICKUP = 0;
+    private static final double INTAKE_WRIST_2_PICKUP = 0;
 
     public IntakeV4BSubsystem(HardwareMap hardwareMap) {
         wristServo1 = hardwareMap.get(Servo.class, "wsrv1");
@@ -25,11 +25,11 @@ public class IntakeV4BSubsystem {
     }
 
     public void setWristDropPosition() {
-        setWristPosition(WRIST_1_DROP, WRIST_2_DROP);
+        setWristPosition(INTAKE_WRIST_1_DROP, INTAKE_WRIST_2_DROP);
     }
 
     public void setWristDefaultPosition() {
-        setWristPosition(WRIST_1_DEFAULT, WRIST_2_DEFAULT);
+        setWristPosition(INTAKE_WRIST_1_DEFAULT, INTAKE_WRIST_2_DEFAULT);
     }
 
     private void setWristPosition(double pos1, double pos2) {
@@ -44,23 +44,23 @@ public class IntakeV4BSubsystem {
 
             @Override
             public boolean run(TelemetryPacket telemetryPacket) {
-                currentPos1 = adjustPosition(currentPos1, WRIST_1_PICKUP);
-                currentPos2 = adjustPosition(currentPos2, WRIST_2_PICKUP);
+                currentPos1 = adjustPosition(currentPos1, INTAKE_WRIST_1_PICKUP);
+                currentPos2 = adjustPosition(currentPos2, INTAKE_WRIST_2_PICKUP);
 
                 wristServo1.setPosition(currentPos1);
                 wristServo2.setPosition(currentPos2);
 
-                return !(isAtTarget(currentPos1, WRIST_1_PICKUP) && isAtTarget(currentPos2, WRIST_2_PICKUP));
+                return !(isAtTarget(currentPos1, INTAKE_WRIST_1_PICKUP) && isAtTarget(currentPos2, INTAKE_WRIST_2_PICKUP));
             }
 
             private double adjustPosition(double current, double target) {
                 return current < target
-                        ? Math.min(current + POSITION_INCREMENT, target)
-                        : Math.max(current - POSITION_INCREMENT, target);
+                        ? Math.min(current + INTAKE_POSITION_INCREMENT, target)
+                        : Math.max(current - INTAKE_POSITION_INCREMENT, target);
             }
 
             private boolean isAtTarget(double current, double target) {
-                return Math.abs(current - target) <= POSITION_INCREMENT;
+                return Math.abs(current - target) <= INTAKE_POSITION_INCREMENT;
             }
         };
     }
