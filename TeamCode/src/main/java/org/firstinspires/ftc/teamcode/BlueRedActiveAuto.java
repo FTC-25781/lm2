@@ -116,100 +116,6 @@ public class BlueRedActiveAuto extends LinearOpMode {
                         }
                     }
                 })
-//                .stopAndAdd(new Action() { //intake wrist to drop so deposit can come down
-//                    ElapsedTime timer = new ElapsedTime();
-//
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        wsrv1.setPosition(0.4);
-//                        wsrv2.setPosition(0.4);
-//
-//                        if (timer.time(TimeUnit.SECONDS) < 1)
-//                            return true;
-//                        else
-//                            return false;
-//                    }
-//                })
-//                .stopAndAdd(new Action() { //dep clsrv opens
-//                    ElapsedTime timer = new ElapsedTime();
-//
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        dclsrv.setPosition(0.42);
-//
-//                        if (timer.time(TimeUnit.SECONDS) < 1)
-//                            return true;
-//                        else
-//                            return false;
-//                    }
-//                })
-//                .stopAndAdd(new Action() { //dep wrist pick pos
-//                    ElapsedTime timer = new ElapsedTime();
-//
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        dwsrv1.setPosition(0.57);
-//                        dwsrv2.setPosition(0.45);
-//
-//                        if (timer.time(TimeUnit.SECONDS) < 1)
-//                            return true;
-//                        else
-//                            return false;
-//                    }
-//                })
-//                .stopAndAdd(new Action() { //dep slides go all the way down so claw can pick sample
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        vsmot.setTargetPosition(0);
-//                        vsmot2.setTargetPosition(0);
-//                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                        vsmot.setPower(1);
-//                        vsmot2.setPower(1);
-//
-//                        if (vsmot.isBusy() && vsmot2.isBusy()) {
-//                            return true;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                })
-//                .stopAndAdd(new Action() { //dep claw close
-//                    ElapsedTime timer = new ElapsedTime();
-//
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        dclsrv.setPosition(0.52);
-//
-//                        if (timer.time(TimeUnit.SECONDS) < 1)
-//                            return true;
-//                        else
-//                            return false;
-//                    }
-//                })
-//                .stopAndAdd(new Action() { //dep slides go up to buckets
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        vsmot.setTargetPosition(100);
-//                        vsmot2.setTargetPosition(100);
-//                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                        vsmot.setPower(1);
-//                        vsmot2.setPower(1);
-//
-//                        if (vsmot.isBusy() && vsmot2.isBusy()) {
-//                            return true;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                })
                 .stopAndAdd(new Action() { //dep arm set to drop pos
                     ElapsedTime timer = new ElapsedTime();
 
@@ -485,52 +391,432 @@ public class BlueRedActiveAuto extends LinearOpMode {
                     }
                 })
                 .strafeToLinearHeading(new Vector2d(82.62, 58.89), 0) //second sample
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //going back under basket
-                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //going back under basket
-                .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)
-                .strafeToLinearHeading(new Vector2d(122.77, 26.01), 0)
-                .build();
-//                .stopAndAdd(new Action() {
-//                    ElapsedTime timer = new ElapsedTime();
+                .stopAndAdd(new Action() { //intake slides go out
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-////                        clsrv.setPosition(1);
-//
-//                        if (timer.time(TimeUnit.SECONDS) < 4)
-//                            return true;
-//                        else
-//                            return false;
-//                    }
-//                })
-//                .stopAndAdd((p) -> {
-//                    ElapsedTime timer = new ElapsedTime();
-//
-//                    clsrv.setPosition(1);
-//
-//                    if (timer.now(TimeUnit.SECONDS) < 1)
-//                        return true;
-//                    else
-//                        return false;
-//                })
-//                .stopAndAdd(new Action() {
-//                    @Override
-//                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-//
-//                        hsmot.setTargetPosition(100);
-//                        hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//                        hsmot.setPower(1);
-//
-//                        if (hsmot.isBusy()) {
-//                            return true;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                })
-//
+                        hsmot.setTargetPosition(HSMOT_PICKUP);
+                        hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        hsmot.setPower(1);
+
+                        if (hsmot.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw orients
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        orsrv.setPosition(SAMPLE_CLAW_ORIENT);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake wrist goes to pick pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        wsrv1.setPosition(INTAKE_WRIST1_PICK);
+                        wsrv2.setPosition(INTAKE_WRIST2_PICK);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw closes
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake wrist to drop pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        wsrv1.setPosition(INTAKE_WRIST1_DROP);
+                        wsrv2.setPosition(INTAKE_WRIST2_DROP);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep clsrv opens for clearance for block
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake slides go back in
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        hsmot.setTargetPosition(HSMOT_BACK);
+                        hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        hsmot.setPower(1);
+
+                        if (hsmot.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //going back under basket
+                .stopAndAdd(new Action() { //dep claw close
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() {
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) { //dep slides to drop pos
+
+                        vsmot.setTargetPosition(VSMOT_UP);
+                        vsmot2.setTargetPosition(VSMOT_UP);
+                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot.setPower(1);
+                        vsmot2.setPower(1);
+
+                        if (vsmot.isBusy() && vsmot2.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .stopAndAdd(new Action() { //dep arm set to drop pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dwsrv1.setPosition(DEPOSIT_WRIST1_DROP);
+                        dwsrv2.setPosition(DEPOSIT_WRIST2_DROP);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep wrist set to pick
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dwsrv1.setPosition(DEPOSIT_WRIST1_PICK);
+                        dwsrv2.setPosition(DEPOSIT_WRIST2_PICK);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep slides come back down
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        vsmot.setTargetPosition(VSMOT_DOWN);
+                        vsmot2.setTargetPosition(VSMOT_DOWN);
+                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot.setPower(1);
+                        vsmot2.setPower(1);
+
+                        if (vsmot.isBusy() && vsmot2.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
+                .stopAndAdd(new Action() { //intake slides go out
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        hsmot.setTargetPosition(HSMOT_PICKUP);
+                        hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        hsmot.setPower(1);
+
+                        if (hsmot.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw orients
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        orsrv.setPosition(SAMPLE_CLAW_ORIENT);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake wrist goes to pick pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        wsrv1.setPosition(INTAKE_WRIST1_PICK);
+                        wsrv2.setPosition(INTAKE_WRIST2_PICK);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw closes
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake wrist to drop pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        wsrv1.setPosition(INTAKE_WRIST1_DROP);
+                        wsrv2.setPosition(INTAKE_WRIST2_DROP);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep clsrv opens for clearance for block
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake slides go back in
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        hsmot.setTargetPosition(HSMOT_BACK);
+                        hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        hsmot.setPower(1);
+
+                        if (hsmot.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //going back under basket
+                .stopAndAdd(new Action() { //dep claw close
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() {
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) { //dep slides to drop pos
+
+                        vsmot.setTargetPosition(VSMOT_UP);
+                        vsmot2.setTargetPosition(VSMOT_UP);
+                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot.setPower(1);
+                        vsmot2.setPower(1);
+
+                        if (vsmot.isBusy() && vsmot2.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .stopAndAdd(new Action() { //dep arm set to drop pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dwsrv1.setPosition(DEPOSIT_WRIST1_DROP);
+                        dwsrv2.setPosition(DEPOSIT_WRIST2_DROP);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep wrist set to pick
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        dwsrv1.setPosition(DEPOSIT_WRIST1_PICK);
+                        dwsrv2.setPosition(DEPOSIT_WRIST2_PICK);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //dep slides come back down
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        vsmot.setTargetPosition(VSMOT_DOWN);
+                        vsmot2.setTargetPosition(VSMOT_DOWN);
+                        vsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                        vsmot.setPower(1);
+                        vsmot2.setPower(1);
+
+                        if (vsmot.isBusy() && vsmot2.isBusy()) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)//going to park part 1
+                .strafeToLinearHeading(new Vector2d(122.77, 26.01), 0)//going to park part 2
+                .build();
 
 
 
