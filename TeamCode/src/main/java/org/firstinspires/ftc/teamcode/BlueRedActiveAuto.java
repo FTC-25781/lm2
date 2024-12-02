@@ -58,25 +58,26 @@ public class BlueRedActiveAuto extends LinearOpMode {
     public Servo dwsrv2;
     public DigitalChannel dpltsw;
 
-    public static final int HSMOT_PICKUP = 0;
+    public static final int HSMOT_PICKUP = 800;
     public static final int HSMOT_BACK = 0;
-    public static final double INTAKE_CLAW_OPEN = 0;
-    public static final double INTAKE_CLAW_CLOSE = 0;
+    public static final double INTAKE_CLAW_OPEN = 0.77;
+    public static final double INTAKE_CLAW_CLOSE = 1.0;
     public static final double SAMPLE_CLAW_ORIENT = 0;
-    public static final double INTAKE_WRIST1_DROP = 0;
-    public static final double INTAKE_WRIST2_DROP = 0;
+    public static final double INTAKE_TO_DEPOSIT_CLAW_ORIENT = 0.55;
+    public static final double INTAKE_WRIST1_DROP = 0.4;
+    public static final double INTAKE_WRIST2_DROP = 0.4;
     public static final double INTAKE_WRIST1_PICK = 0;
     public static final double INTAKE_WRIST2_PICK = 0;
-    public static final double INTAKE_WRIST1_DEFAULT = 0;
-    public static final double INTAKE_WRIST2_DEFAULT = 0;
+    public static final double INTAKE_WRIST1_DEFAULT = 0.2;
+    public static final double INTAKE_WRIST2_DEFAULT = 0.2;
     public static final int VSMOT_DOWN = 0;
-    public static final int VSMOT_UP = 0;
-    public static final double DEPOSIT_CLAW_OPEN = 0;
-    public static final double DEPOSIT_CLAW_CLOSE = 0;
-    public static final double DEPOSIT_WRIST1_DROP = 0;
-    public static final double DEPOSIT_WRIST2_DROP = 0;
-    public static final double DEPOSIT_WRIST1_PICK = 0;
-    public static final double DEPOSIT_WRIST2_PICK = 0;
+    public static final int VSMOT_UP = 800;
+    public static final double DEPOSIT_CLAW_OPEN = 0.3;
+    public static final double DEPOSIT_CLAW_CLOSE = 0.55;
+    public static final double DEPOSIT_WRIST1_DROP = 1.0;
+    public static final double DEPOSIT_WRIST2_DROP = 1.0;
+    public static final double DEPOSIT_WRIST1_PICK = 0.27;
+    public static final double DEPOSIT_WRIST2_PICK = 0.27;
     public static final double DEPOSIT_WRIST1_DEFAULT = 0;
     public static final double DEPOSIT_WRIST2_DEFAULT = 0;
 
@@ -273,6 +274,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
                         dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //orient servo to deposit servo orient
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        orsrv.setPosition(INTAKE_TO_DEPOSIT_CLAW_ORIENT);
 
                         if (timer.time(TimeUnit.SECONDS) < 1)
                             return true;
@@ -492,6 +507,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                             return false;
                     }
                 })
+                .stopAndAdd(new Action() { //orient servo to deposit servo orient
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        orsrv.setPosition(INTAKE_TO_DEPOSIT_CLAW_ORIENT);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
                 .stopAndAdd(new Action() { //intake slides go back in
                     @Override
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -697,6 +726,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
                         dclsrv.setPosition(DEPOSIT_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //orient servo to deposit servo orient
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        orsrv.setPosition(INTAKE_TO_DEPOSIT_CLAW_ORIENT);
 
                         if (timer.time(TimeUnit.SECONDS) < 1)
                             return true;
