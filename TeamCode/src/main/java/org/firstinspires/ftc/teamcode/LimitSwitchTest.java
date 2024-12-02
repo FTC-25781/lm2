@@ -51,28 +51,29 @@ public class LimitSwitchTest extends LinearOpMode {
     DigitalChannel intakeLmtSw;  // Digital channel Object
     private DcMotor hsmot = null;
     private DcMotor rightDrive = null;
+    private DcMotor leftDrive = null;
 
     @Override
     public void runOpMode() {
 
         // get a reference to our touchSensor object.
-        depositLmtSw = hardwareMap.get(DigitalChannel.class, "dpltsw");
-        intakeLmtSw = hardwareMap.get(DigitalChannel.class, "inltsw");
+        intakeLmtSw = hardwareMap.get(DigitalChannel.class, "dpltsw");
+        depositLmtSw = hardwareMap.get(DigitalChannel.class, "inltsw");
+
+        hsmot  = hardwareMap.get(DcMotor.class, "hsmot");
+        rightDrive = hardwareMap.get(DcMotor.class, "vsmot2");
+        leftDrive = hardwareMap.get(DcMotor.class, "vsmot");
 
         depositLmtSw.setMode(DigitalChannel.Mode.INPUT);
         intakeLmtSw.setMode(DigitalChannel.Mode.INPUT);
 
-        telemetry.addData("DigitalTouchSensorExample", "Press start to continue...");
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-
-        hsmot  = hardwareMap.get(DcMotor.class, "hsmot");
-//        rightDrive = hardwareMap.get(DcMotor.class, "vsmot2");
-//        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-//        rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightDrive.setDirection(DcMotor.Direction.FORWARD);
         hsmot.setDirection(DcMotor.Direction.FORWARD);
+
         hsmot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // wait for the start button to be pressed.
         waitForStart();
@@ -83,29 +84,41 @@ public class LimitSwitchTest extends LinearOpMode {
 
             // button is pressed if value returned is LOW or false.
             // send the info back to driver station using telemetry function.
-            if (depositLmtSw.getState() == false) {
-                telemetry.addData("Dp Button", "PRESSED");
-            } else {
-                telemetry.addData("Dp Button", "NOT PRESSED");
-            }
-            if (intakeLmtSw.getState() == false) {
-                telemetry.addData("In Button", "PRESSED");
-            } else {
-                telemetry.addData("In Button", "NOT PRESSED");
-            }
+
             telemetry.update();
 
-            double power = -gamepad1.left_stick_y;
+            double hpower = -gamepad1.left_stick_y;
             // when limit sw is hit
-            if(!depositLmtSw.getState() && power<0) {
-                hsmot.setPower(power);
-            } else if (depositLmtSw.getState()) {
-                hsmot.setPower(power);
+            if((!intakeLmtSw.getState() && hpower<0) || (intakeLmtSw.getState())) {
+                hpower = hpower;
+            } else {
+                hpower=0;
+            }
+
+            hsmot.setPower(hpower);
+
+            double vpower = -gamepad1.right_stick_y;
+
+            if((!depositLmtSw.getState() && vpower>0) || (depositLmtSw.getState())) { //9200
+                vpower = vpower;
+            } else {
+                vpower=0;
+            }
+
+            rightDrive.setPower(vpower);
+            leftDrive.setPower(vpower);;
+
+            if(!intakeLmtSw.getState()) {
+                hsmot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                hsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
             if(!depositLmtSw.getState()) {
-                hsmot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                hsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 //
             if(gamepad1.a) {
@@ -119,12 +132,29 @@ public class LimitSwitchTest extends LinearOpMode {
                 hsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
+            if(gamepad1.b) {
+                rightDrive.setTargetPosition(5000);
+                leftDrive.setTargetPosition(5000);
+                rightDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                leftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-//            rightDrive.setPower(power);
+                rightDrive.setPower(0.2);
+                leftDrive.setPower(0.2);
+                while (rightDrive.isBusy() && leftDrive.isBusy() ) {
+                    telemetry.addData("Currently at",  " at %7d", rightDrive.getCurrentPosition());
+                    telemetry.update();
+                }
+                rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
 
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Motors", "power (%.2f)", power);
+            telemetry.addData("Deposit limit switch", depositLmtSw.getState());
+            telemetry.addData("Intake limit switch", intakeLmtSw.getState());
+            telemetry.addData("horizontal Motors", "power (%.2f)", hpower);
             telemetry.addData("motor position", hsmot.getCurrentPosition());
+            telemetry.addData("Vertical Motors", "power (%.2f)", vpower);
+            telemetry.addData("right motor position", rightDrive.getCurrentPosition());
+            telemetry.addData("left motor position", leftDrive.getCurrentPosition());
             telemetry.update();
         }
     }

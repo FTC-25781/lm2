@@ -16,6 +16,7 @@ public class ServoTeleOp extends LinearOpMode {
 
     private Servo intakeClawServo;
     private Servo depositClawServo;
+    private Servo orientation;
 
     @Override
     public void runOpMode() {
@@ -30,6 +31,8 @@ public class ServoTeleOp extends LinearOpMode {
 
         intakeClawServo  = hardwareMap.get(Servo.class, "clsrv");
         depositClawServo  = hardwareMap.get(Servo.class, "dclsrv");
+//
+        orientation =  hardwareMap.get(Servo.class, "orsrv");
 
         iservo1.setDirection(Servo.Direction.REVERSE);
 
@@ -39,6 +42,8 @@ public class ServoTeleOp extends LinearOpMode {
         iservo2.setPosition(0.5); // Adjust for counterclockwise
         dservo1.setPosition(0.5);
         dservo2.setPosition(0.5);
+        depositClawServo.setPosition(0.3);
+        intakeClawServo.setPosition(0.5);
 
         while (opModeIsActive()) {
 
@@ -52,12 +57,20 @@ public class ServoTeleOp extends LinearOpMode {
                 iservo2.setPosition(0.4);
             }
 
-            intakeClawServo.setPosition(gamepad2.left_stick_y);
-            depositClawServo.setPosition(gamepad2.right_stick_y);
+//            intakeClawServo.setPosition(gamepad2.left_stick_y);
+            orientation.setPosition(gamepad2.left_stick_y);
+
+            if (gamepad2.dpad_left) {
+                depositClawServo.setPosition(0.55);
+            }
+
+            if (gamepad2.dpad_right) {
+                depositClawServo.setPosition(0.3);
+            }
 
             if (gamepad2.dpad_down) {
-                dservo1.setPosition(0.27);
-                dservo2.setPosition(0.27);
+                dservo1.setPosition(0.22);
+                dservo2.setPosition(0.22);
             }
 
             if (gamepad2.dpad_up) {
@@ -84,7 +97,7 @@ public class ServoTeleOp extends LinearOpMode {
             // Display the servo positions in the telemetry for debugging
             telemetry.addData("Servo1 Position", iservo1.getPosition());
             telemetry.addData("Servo2 Position", iservo2.getPosition());
-            telemetry.addData("Left Stick Y", gamepad1.left_stick_y);
+            telemetry.addData("Left Stick Y", gamepad2.left_stick_y);
 
             telemetry.addData("Deposit Servo1 Position", dservo1.getPosition());
             telemetry.addData("Deposit Servo2 Position", dservo2.getPosition());

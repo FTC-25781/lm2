@@ -8,8 +8,8 @@ public class IntakeClawSubsystem {
     private final Servo clawServo;
     private final Servo orientationServo;
 
-    private static final double CLAW_OPEN_POS = 0.69;
-    private static final double CLAW_CLOSED_POS = 0.9;
+    private static final double CLAW_OPEN_POS = 0.77;
+    private static final double CLAW_CLOSED_POS = 1.0;
     private double currentOrientation = 0.0;
 
     public IntakeClawSubsystem(HardwareMap hardwareMap) {
@@ -36,7 +36,7 @@ public class IntakeClawSubsystem {
     public void setOrientationDecrease() {
         currentOrientation = Math.min(currentOrientation - 10.0, 90.0);
         double servoPosition = currentOrientation / 180.0;
-        orientationServo.setPosition(clamp(servoPosition));
+        orientationServo.setPosition(orientationClamp(servoPosition));
     }
 
     // Opens the claw to a pre-defined position
@@ -52,6 +52,10 @@ public class IntakeClawSubsystem {
     // Clamps a value between 0.0 and 1.0 to ensure valid servo positions
     private double clamp(double value) {
         return Math.max(0.0, Math.min(1.0, value));
+    }
+
+    private double orientationClamp(double value) {
+        return Math.max(0.0, Math.min(0.55, value));
     }
 
     public void update() {
