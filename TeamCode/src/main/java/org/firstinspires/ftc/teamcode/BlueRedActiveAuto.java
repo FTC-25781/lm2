@@ -58,8 +58,8 @@ public class BlueRedActiveAuto extends LinearOpMode {
     public Servo dwsrv2;
     public DigitalChannel dpltsw;
 
-    public static final int HSMOT_PICKUP = 800;
-    public static final int HSMOT_BACK = 0;
+    public static final int HSMOT_PICKUP = 1000;
+    public static final int HSMOT_BACK = 500;
     public static final double INTAKE_CLAW_OPEN = 0.77;
     public static final double INTAKE_CLAW_CLOSE = 1.0;
     public static final double SAMPLE_CLAW_ORIENT = 0;
@@ -70,8 +70,8 @@ public class BlueRedActiveAuto extends LinearOpMode {
     public static final double INTAKE_WRIST2_PICK = 0;
     public static final double INTAKE_WRIST1_DEFAULT = 0.2;
     public static final double INTAKE_WRIST2_DEFAULT = 0.2;
-    public static final int VSMOT_DOWN = 0;
-    public static final int VSMOT_UP = 800;
+    public static final int VSMOT_DOWN = 4000;
+    public static final int VSMOT_UP = 10500;
     public static final double DEPOSIT_CLAW_OPEN = 0.3;
     public static final double DEPOSIT_CLAW_CLOSE = 0.55;
     public static final double DEPOSIT_WRIST1_DROP = 1.0;
@@ -91,6 +91,35 @@ public class BlueRedActiveAuto extends LinearOpMode {
         // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         drive = new MecanumDrive(hardwareMap, new Pose2d(62.8, 20.5, 0));
+        hsmot  = hardwareMap.get(DcMotor.class, "hsmot");
+        vsmot = hardwareMap.get(DcMotor.class, "vsmot");
+        vsmot2 = hardwareMap.get(DcMotor.class, "vsmot2");
+
+        vsmot.setDirection(DcMotor.Direction.REVERSE);
+        vsmot2.setDirection(DcMotor.Direction.FORWARD);
+        hsmot.setDirection(DcMotor.Direction.FORWARD);
+
+        hsmot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        vsmot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        vsmot2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        wsrv1 = hardwareMap.get(Servo.class, "wsrv1");
+        wsrv2 = hardwareMap.get(Servo.class, "wsrv2");
+
+        dwsrv1 = hardwareMap.get(Servo.class, "dwsrv1");
+        dwsrv2 = hardwareMap.get(Servo.class, "dwsrv2");
+
+        clsrv  = hardwareMap.get(Servo.class, "clsrv");
+        dclsrv  = hardwareMap.get(Servo.class, "dclsrv");
+        orsrv =  hardwareMap.get(Servo.class, "orsrv");
+
+        dpltsw = hardwareMap.get(DigitalChannel.class, "dpltsw");
+        inltsw = hardwareMap.get(DigitalChannel.class, "inltsw");
+
+
+        wsrv1.setDirection(Servo.Direction.REVERSE);
+
+
         robot = new Robot(hardwareMap, telemetry);
 
 
@@ -120,13 +149,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                 .stopAndAdd(new Action() { //dep arm set to drop pos
                     ElapsedTime timer = new ElapsedTime();
 
+                    private boolean initialized = false;
+
                     @Override
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        if (!initialized) {
+                            timer.reset();
+                            initialized = true;
+                        }
 
                         dwsrv1.setPosition(DEPOSIT_WRIST1_DROP);
                         dwsrv2.setPosition(DEPOSIT_WRIST2_DROP);
 
-                        if (timer.time(TimeUnit.SECONDS) < 1)
+                        if (timer.time(TimeUnit.SECONDS) < 5)
                             return true;
                         else
                             return false;
@@ -139,6 +175,21 @@ public class BlueRedActiveAuto extends LinearOpMode {
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
                         dclsrv.setPosition(DEPOSIT_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake wrist goes to pick pos
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        wsrv1.setPosition(INTAKE_WRIST1_PICK);
+                        wsrv2.setPosition(INTAKE_WRIST2_PICK);
 
                         if (timer.time(TimeUnit.SECONDS) < 1)
                             return true;
@@ -318,6 +369,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) {
 
                         dclsrv.setPosition(DEPOSIT_CLAW_CLOSE);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
+                .stopAndAdd(new Action() { //intake claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_OPEN);
 
                         if (timer.time(TimeUnit.SECONDS) < 1)
                             return true;
@@ -551,6 +616,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                             return false;
                     }
                 })
+                .stopAndAdd(new Action() { //intake claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
                 .stopAndAdd(new Action() {
                     @Override
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) { //dep slides to drop pos
@@ -777,6 +856,20 @@ public class BlueRedActiveAuto extends LinearOpMode {
                             return false;
                     }
                 })
+                .stopAndAdd(new Action() { //intake claw opens
+                    ElapsedTime timer = new ElapsedTime();
+
+                    @Override
+                    public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+
+                        clsrv.setPosition(INTAKE_CLAW_OPEN);
+
+                        if (timer.time(TimeUnit.SECONDS) < 1)
+                            return true;
+                        else
+                            return false;
+                    }
+                })
                 .stopAndAdd(new Action() {
                     @Override
                     public boolean run(@NonNull TelemetryPacket telemetryPacket) { //dep slides to drop pos
@@ -870,6 +963,18 @@ public class BlueRedActiveAuto extends LinearOpMode {
         ));
 
         while (opModeIsActive()) {
+            if(!inltsw.getState()) {
+                hsmot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                hsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+
+            if(!dpltsw.getState()) {
+                vsmot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                vsmot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                vsmot2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                vsmot2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
 
             telemetry.update();
 

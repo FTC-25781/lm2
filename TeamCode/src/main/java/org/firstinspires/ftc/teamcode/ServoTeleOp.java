@@ -68,26 +68,22 @@ public class ServoTeleOp extends LinearOpMode {
                 depositClawServo.setPosition(0.3);
             }
 
-            if (gamepad2.dpad_down) {
-                dservo1.setPosition(0.22);
-                dservo2.setPosition(0.22);
-            }
+//
 
-            if (gamepad2.dpad_up) {
-                dservo1.setPosition(0);
-                dservo2.setPosition(0);
-            }
-
+//
+            // Drop position
             if (gamepad2.dpad_down) {
                 dservo1.setPosition(0.27);
                 dservo2.setPosition(0.27);
             }
 
+            // pick position
             if (gamepad2.dpad_up) {
                 dservo1.setPosition(1.0);
                 dservo2.setPosition(1.0);
             }
 
+            // Sample postion
             if (gamepad2.left_stick_button) {
                 dservo1.setPosition(0);
                 dservo2.setPosition(0);
