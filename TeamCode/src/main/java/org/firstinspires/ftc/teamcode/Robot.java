@@ -48,7 +48,7 @@ public class Robot {
     }
 
     public void startIntakeDrop() {
-        intakeV4B.wristPositionAction();
+        intakeV4B.setWristPickPosition();
         intakeClaw.closeClaw();
         intakeV4B.setWristDropPosition();
         intakeSlide.retractMainSlide();

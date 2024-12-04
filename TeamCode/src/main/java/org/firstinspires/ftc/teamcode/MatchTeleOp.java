@@ -11,7 +11,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @TeleOp(name = "Match Teleop", group = "Teleop")
-@Disabled
 public class MatchTeleOp extends LinearOpMode {
 
     // Robot components
@@ -90,7 +89,7 @@ public class MatchTeleOp extends LinearOpMode {
 
         robot.intakeSlide.manualExtension(gamepad2.right_stick_y);
 
-        if (gamepad2.x) robot.intakeV4B.wristPositionAction();
+        if (gamepad2.x) robot.intakeV4B.setWristPickPosition();
         if (gamepad2.y) robot.intakeV4B.setWristDropPosition();
         if (gamepad2.right_stick_button) robot.intakeV4B.setWristDefaultPosition();
         if (gamepad2.left_bumper) robot.intakeClaw.setOrientationIncrease();

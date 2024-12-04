@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.subsystem.intake;
 
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,59 +8,56 @@ public class IntakeV4BSubsystem {
     public final Servo wristServo1;
     public final Servo wristServo2;
 
-    private static final double INTAKE_POSITION_INCREMENT = 0.01;
+    private static final double POSITION_INCREMENT = 0.01;
+    private static final int DELAY_MS = 20; // Delay between increments
 
-    private static final double INTAKE_WRIST_1_DEFAULT = 0.2;
-    private static final double INTAKE_WRIST_2_DEFAULT = 0.2;
-    private static final double INTAKE_WRIST_1_DROP = 0.4;
-    private static final double INTAKE_WRIST_2_DROP = 0.4;
-    private static final double INTAKE_WRIST_1_PICKUP = 0;
-    private static final double INTAKE_WRIST_2_PICKUP = 0;
+    private static final double DEFAULT = 0.2;
+    private static final double DROP = 0.38;
+    private static final double PICKUP = 0.05;
 
     public IntakeV4BSubsystem(HardwareMap hardwareMap) {
         wristServo1 = hardwareMap.get(Servo.class, "wsrv1");
         wristServo2 = hardwareMap.get(Servo.class, "wsrv2");
+
+        wristServo1.setDirection(Servo.Direction.REVERSE);
+
+        wristServo1.setPosition(0.5); // Initial position
+        wristServo2.setPosition(0.5);
     }
 
     public void setWristDropPosition() {
-        setWristPosition(INTAKE_WRIST_1_DROP, INTAKE_WRIST_2_DROP);
+        smoothSetWristPosition(DROP, DROP);
     }
 
     public void setWristDefaultPosition() {
-        setWristPosition(INTAKE_WRIST_1_DEFAULT, INTAKE_WRIST_2_DEFAULT);
+        smoothSetWristPosition(DEFAULT, DEFAULT);
     }
 
-    private void setWristPosition(double pos1, double pos2) {
-        wristServo1.setPosition(pos1);
-        wristServo2.setPosition(pos2);
+    public void setWristPickPosition() {
+        smoothSetWristPosition(PICKUP, PICKUP);
     }
 
-    public Action wristPositionAction() {
-        return new Action() {
-            private double currentPos1 = wristServo1.getPosition();
-            private double currentPos2 = wristServo2.getPosition();
+    private void smoothSetWristPosition(double targetPos1, double targetPos2) {
+        new Thread(() -> {
+            smoothMoveServo(wristServo1, targetPos1);
+        }).start();
+        new Thread(() -> {
+            smoothMoveServo(wristServo2, targetPos2);
+        }).start();
+    }
 
-            @Override
-            public boolean run(TelemetryPacket telemetryPacket) {
-                currentPos1 = adjustPosition(currentPos1, INTAKE_WRIST_1_PICKUP);
-                currentPos2 = adjustPosition(currentPos2, INTAKE_WRIST_2_PICKUP);
-
-                wristServo1.setPosition(currentPos1);
-                wristServo2.setPosition(currentPos2);
-
-                return !(isAtTarget(currentPos1, INTAKE_WRIST_1_PICKUP) && isAtTarget(currentPos2, INTAKE_WRIST_2_PICKUP));
+    private void smoothMoveServo(Servo servo, double targetPosition) {
+        double currentPosition = servo.getPosition();
+        while (Math.abs(currentPosition - targetPosition) > POSITION_INCREMENT) {
+            currentPosition += Math.signum(targetPosition - currentPosition) * POSITION_INCREMENT;
+            servo.setPosition(currentPosition);
+            try {
+                Thread.sleep(DELAY_MS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-
-            private double adjustPosition(double current, double target) {
-                return current < target
-                        ? Math.min(current + INTAKE_POSITION_INCREMENT, target)
-                        : Math.max(current - INTAKE_POSITION_INCREMENT, target);
-            }
-
-            private boolean isAtTarget(double current, double target) {
-                return Math.abs(current - target) <= INTAKE_POSITION_INCREMENT;
-            }
-        };
+        }
+        servo.setPosition(targetPosition); // Ensure final precision
     }
 
     public void update() {
