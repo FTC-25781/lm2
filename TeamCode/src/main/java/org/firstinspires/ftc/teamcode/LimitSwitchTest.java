@@ -57,8 +57,8 @@ public class LimitSwitchTest extends LinearOpMode {
     public void runOpMode() {
 
         // get a reference to our touchSensor object.
-        intakeLmtSw = hardwareMap.get(DigitalChannel.class, "dpltsw");
-        depositLmtSw = hardwareMap.get(DigitalChannel.class, "inltsw");
+        depositLmtSw = hardwareMap.get(DigitalChannel.class, "dpltsw");
+        intakeLmtSw = hardwareMap.get(DigitalChannel.class, "inltsw");
 
         hsmot  = hardwareMap.get(DcMotor.class, "hsmot");
         rightDrive = hardwareMap.get(DcMotor.class, "vsmot2");
