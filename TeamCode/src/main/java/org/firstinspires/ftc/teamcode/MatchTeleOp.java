@@ -104,6 +104,7 @@ public class MatchTeleOp extends LinearOpMode {
 
         if (gamepad2.dpad_down) robot.depositV4B.setWristPickPosition();
         if (gamepad2.dpad_up) robot.depositV4B.setWristDropPosition();
+        if (gamepad2.left_stick_button) robot.depositV4B.setWristSpecimenDropPosition();
     }
 
     private void sendTelemetry() {

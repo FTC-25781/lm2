@@ -20,9 +20,6 @@ public class IntakeV4BSubsystem {
         wristServo2 = hardwareMap.get(Servo.class, "wsrv2");
 
         wristServo1.setDirection(Servo.Direction.REVERSE);
-
-        wristServo1.setPosition(0.5); // Initial position
-        wristServo2.setPosition(0.5);
     }
 
     public void setWristDropPosition() {
