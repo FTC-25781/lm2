@@ -10,8 +10,8 @@ public class DepositSlideSubsystem {
     private final DcMotor verticalSlideMotor;
     private final DcMotor verticalSlideMotor2;
 
-    private static final int SLIDE_EXTEND_POS = 800;
-    private static final int SLIDE_RETRACT_POS = 0;
+    private static final int SLIDE_EXTEND_POS = 10000;
+    private static final int SLIDE_RETRACT_POS = 500;
     private static final double SLIDE_EXTEND_SPEED = 0.5;
     private static final double MIN_SPEED = 0.1;
 
@@ -42,32 +42,56 @@ public class DepositSlideSubsystem {
     }
 
     public void extendDepositMainSlide() {
-        if (depositLimitSwitch.getState()) {
-            int currentPosition = verticalSlideMotor.getCurrentPosition();
-            int distanceToTarget = SLIDE_EXTEND_POS - currentPosition;
+        int currentPosition = verticalSlideMotor.getCurrentPosition();
+        int distanceToTarget = SLIDE_EXTEND_POS - currentPosition;
 
+        verticalSlideMotor.setTargetPosition(SLIDE_EXTEND_POS);
+        verticalSlideMotor2.setTargetPosition(SLIDE_EXTEND_POS);
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        verticalSlideMotor.setPower(1);
+        verticalSlideMotor2.setPower(1);
+
+        while (verticalSlideMotor.isBusy() && verticalSlideMotor2.isBusy()) {
             double proportionalSpeed = Math.max(MIN_SPEED, (double) distanceToTarget / 1000);
             verticalSlideMotor.setPower(distanceToTarget > 0 ? proportionalSpeed * SLIDE_EXTEND_SPEED : 0);
             verticalSlideMotor2.setPower(distanceToTarget > 0 ? proportionalSpeed * SLIDE_EXTEND_SPEED : 0);
-        } else {
-            stopSlides();
         }
+
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void retractDepositMainSlide() {
-        if (!depositLimitSwitch.getState() || verticalSlideMotor.getCurrentPosition() <= SLIDE_RETRACT_POS) {
-            stopSlides();
-        } else {
-            verticalSlideMotor.setPower(-SLIDE_EXTEND_SPEED);
-            verticalSlideMotor2.setPower(-SLIDE_EXTEND_SPEED);
+        int currentPosition = verticalSlideMotor.getCurrentPosition();
+        int distanceToTarget = currentPosition - SLIDE_RETRACT_POS;
+
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        while (verticalSlideMotor.isBusy() && verticalSlideMotor2.isBusy() && depositLimitSwitch.getState()) {
+            currentPosition = verticalSlideMotor.getCurrentPosition();
+            distanceToTarget = currentPosition - SLIDE_RETRACT_POS;
+
+            double proportionalSpeed = Math.max(MIN_SPEED, (double) distanceToTarget / 1000);
+            verticalSlideMotor.setPower(-proportionalSpeed * SLIDE_EXTEND_SPEED);
+            verticalSlideMotor2.setPower(-proportionalSpeed * SLIDE_EXTEND_SPEED);
         }
+
+        verticalSlideMotor.setPower(0);
+        verticalSlideMotor2.setPower(0);
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
 
     public void stopSlides() {
         verticalSlideMotor.setPower(0);
         verticalSlideMotor2.setPower(0);
         verticalSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         verticalSlideMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private double clampPower(double power) {

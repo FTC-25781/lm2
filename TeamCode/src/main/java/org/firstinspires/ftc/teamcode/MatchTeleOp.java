@@ -31,7 +31,14 @@ public class MatchTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            handleDriveInput();
+            drive.setDrivePowers(new PoseVelocity2d(
+                    new Vector2d(gamepad1.right_stick_x, gamepad1.right_stick_y),
+                    gamepad1.left_stick_x
+            ));
+            drive.updatePoseEstimate();
+            updateIntakeControls();
+            updateDepositControls();
+            sendTelemetry();
             robot.update();
         }
     }
@@ -51,31 +58,27 @@ public class MatchTeleOp extends LinearOpMode {
         double rx = gamepad1.right_stick_x;
 
         drive.setDrivePowers(new PoseVelocity2d(new Vector2d(y, x), -rx));
-        setDrivePower(x, y, rx);
+        setDrivePower();
     }
 
     // Calculates and sets motor powers for mecanum drive
-    private void setDrivePower(double x, double y, double rx) {
-        double frontLeftPower = y + x + rx;
-        double frontRightPower = y - x - rx;
-        double backLeftPower = y - x + rx;
-        double backRightPower = y + x - rx;
+    private void setDrivePower() {
+        double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+        double rx = gamepad1.right_stick_x;
 
-        // Normalize motor powers if any exceeds 1.0
-        double maxPower = Math.max(Math.abs(frontLeftPower),
-                Math.max(Math.abs(frontRightPower),
-                        Math.max(Math.abs(backLeftPower), Math.abs(backRightPower))));
-
-        if (maxPower > 1.0) {
-            frontLeftPower /= maxPower;
-            frontRightPower /= maxPower;
-            backLeftPower /= maxPower;
-            backRightPower /= maxPower;
-        }
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio,
+        // but only if at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
 
         leftFront.setPower(frontLeftPower);
-        rightFront.setPower(frontRightPower);
         leftBack.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
         rightBack.setPower(backRightPower);
 
         updateIntakeControls();
@@ -101,6 +104,9 @@ public class MatchTeleOp extends LinearOpMode {
         if (gamepad2.dpad_left) robot.depositClaw.closeDepositClaw();
 
         robot.depositSlide.manualExtension(gamepad2.left_stick_y);
+
+        if (gamepad1.dpad_up) robot.depositSlide.extendDepositMainSlide();
+        if (gamepad1.dpad_right) robot.depositSlide.retractDepositMainSlide();
 
         if (gamepad2.dpad_down) robot.depositV4B.setWristPickPosition();
         if (gamepad2.dpad_up) robot.depositV4B.setWristDropPosition();
