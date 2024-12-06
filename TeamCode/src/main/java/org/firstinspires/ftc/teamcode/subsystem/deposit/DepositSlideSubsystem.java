@@ -10,7 +10,7 @@ public class DepositSlideSubsystem {
     private final DcMotor verticalSlideMotor;
     private final DcMotor verticalSlideMotor2;
 
-    private static final int SLIDE_EXTEND_POS = 10100;
+    private static final int SLIDE_EXTEND_POS = 10000;
     private static final int SLIDE_RETRACT_POS = 500;
     private static final double SLIDE_EXTEND_SPEED = 0.5;
     private static final double MIN_SPEED = 0.1;
