@@ -30,72 +30,116 @@ public class BlueRedActiveAuto extends LinearOpMode {
         robot = new Robot(hardwareMap, telemetry);
 
         runtime.reset();
-        robot.depositSlide.stopSlides();
+        //robot.depositSlide.stopSlides();
 
         waitForStart();
 
         Action bluered1 = drive.actionBuilder(new Pose2d(62.8,20.5,0))
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //first time going under basket
+                .strafeToLinearHeading(new Vector2d(78.8, 44.73), -45)
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositSlide.extendDepositMainSlide();
+                            telemetry.addData("Extending:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4),
+                        new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristDropPosition();
+                            telemetry.addData("DP Drop:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(1),
+                        new SleepAction(1)
+                ))
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //first time going under basket
+                .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw:", robot.depositClaw.clawServo.getPosition());
                             robot.intakeV4B.setWristDefaultPosition();
+                            telemetry.addData("In Default:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
-                            robot.depositV4B.setWristPickPosition();
+                            robot.depositClaw.closeDepositClaw();
+                            telemetry.addData("Dp Claw:", robot.depositClaw.clawServo.getPosition());
+                            telemetry.update();
+                            return false;
+                        },
+                        new SleepAction(1)
+                ))
+                .strafeToLinearHeading(new Vector2d(78.8, 44.73), -45)
+                .stopAndAdd(new SequentialAction(
+                        (p) -> {
+                            robot.depositV4B.setWristSpecimenDropPosition();
+                            telemetry.addData("Spec Drop:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositSlide.retractDepositMainSlide();
+                            telemetry.addData("Retract:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4)
-
+                        new SleepAction(2),
+                        (p) -> {
+                            robot.depositV4B.setWristPickPosition();
+                            telemetry.addData("Dp Pick:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
+                            return false;
+                        },
+                        new SleepAction(1)
                 ))
                 .strafeToLinearHeading(new Vector2d(85.5,47.95), 0) //first sample
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.intakeSlide.extendMainSlide();
+                            telemetry.addData("Extend:", robot.intakeSlide.slideMotor.getCurrentPosition());
                             robot.intakeClaw.openClaw();
+                            telemetry.addData("Open:", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(2),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristPickPosition();
+                            telemetry.addData("In Pick:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.closeClaw();
+                            telemetry.addData("In Claw Close", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristDropPosition();
+                            telemetry.addData("In Drop:", robot.intakeV4B.wristServo1.getPosition());
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw Open:", robot.depositClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1)
@@ -105,63 +149,88 @@ public class BlueRedActiveAuto extends LinearOpMode {
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositSlide.extendDepositMainSlide();
+                            telemetry.addData("Extending:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
-                        },
-                        new SleepAction(4),
+                            },
+                        new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristDropPosition();
+                            telemetry.addData("DP Drop:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw:", robot.depositClaw.clawServo.getPosition());
                             robot.intakeV4B.setWristDefaultPosition();
+                            telemetry.addData("In Default:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristPickPosition();
+                            telemetry.addData("DP Pick:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositSlide.retractDepositMainSlide();
+                            telemetry.addData("Retract:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4)
+                        new SleepAction(2)
 
                 ))
                 .strafeToLinearHeading(new Vector2d(85.5, 58.89), 0) //second sample
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.intakeSlide.extendMainSlide();
+                            telemetry.addData("Extend:", robot.intakeSlide.slideMotor.getCurrentPosition());
                             robot.intakeClaw.openClaw();
+                            telemetry.addData("Open:", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(2),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristPickPosition();
+                            telemetry.addData("In Pick:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.closeClaw();
+                            telemetry.addData("In Claw Close", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristDropPosition();
+                            telemetry.addData("In Drop:", robot.intakeV4B.wristServo1.getPosition());
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw Open:", robot.depositClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1)
@@ -171,64 +240,88 @@ public class BlueRedActiveAuto extends LinearOpMode {
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositSlide.extendDepositMainSlide();
+                            telemetry.addData("Extending:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4),
+                        new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristDropPosition();
+                            telemetry.addData("DP Drop:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw:", robot.depositClaw.clawServo.getPosition());
                             robot.intakeV4B.setWristDefaultPosition();
+                            telemetry.addData("In Default:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristPickPosition();
+                            telemetry.addData("DP Pick:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositSlide.retractDepositMainSlide();
+                            telemetry.addData("Retract:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4)
+                        new SleepAction(2)
 
                 ))
-
                 .strafeToLinearHeading(new Vector2d(95.86, 48.91), -80) //turn sideways and third sample
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.intakeSlide.extendMainSlide();
+                            telemetry.addData("Extend:", robot.intakeSlide.slideMotor.getCurrentPosition());
                             robot.intakeClaw.openClaw();
+                            telemetry.addData("Open:", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(2),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristPickPosition();
+                            telemetry.addData("In Pick:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.closeClaw();
+                            telemetry.addData("In Claw Close", robot.intakeClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeV4B.setWristDropPosition();
+                            telemetry.addData("In Drop:", robot.intakeV4B.wristServo1.getPosition());
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw Open:", robot.depositClaw.clawServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.intakeClaw.setOrientationIncrease();
+                            telemetry.addData("Orientation:", robot.intakeClaw.orientationServo.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1)
@@ -238,30 +331,41 @@ public class BlueRedActiveAuto extends LinearOpMode {
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositSlide.extendDepositMainSlide();
+                            telemetry.addData("Extending:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4),
+                        new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristDropPosition();
+                            telemetry.addData("DP Drop:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositClaw.openDepositClaw();
+                            telemetry.addData("Dp Claw:", robot.depositClaw.clawServo.getPosition());
                             robot.intakeV4B.setWristDefaultPosition();
+                            telemetry.addData("In Default:", robot.intakeV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositV4B.setWristPickPosition();
+                            telemetry.addData("DP Pick:", robot.depositV4B.wristServo1.getPosition());
+                            telemetry.update();
                             return false;
                         },
                         new SleepAction(1),
                         (p) -> {
                             robot.depositSlide.retractDepositMainSlide();
+                            telemetry.addData("Retract:", robot.depositSlide.verticalSlideMotor.getCurrentPosition());
+                            telemetry.update();
                             return false;
                         },
-                        new SleepAction(4)
+                        new SleepAction(2)
 
                 ))
                 .strafeToLinearHeading(new Vector2d(115.52, 60.20), 0)//going to park part 1

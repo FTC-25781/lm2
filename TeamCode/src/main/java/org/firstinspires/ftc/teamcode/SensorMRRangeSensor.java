@@ -50,7 +50,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * @see <a href="http://modernroboticsinc.com/range-sensor">MR Range Sensor</a>
  */
 @TeleOp(name = "Sensor: MR range sensor", group = "Sensor")
-@Disabled   // comment out or remove this line to enable this OpMode
+   // comment out or remove this line to enable this OpMode
 public class SensorMRRangeSensor extends LinearOpMode {
 
     public UltrasonicDistanceSensor rangeSensor;
@@ -58,7 +58,7 @@ public class SensorMRRangeSensor extends LinearOpMode {
     @Override public void runOpMode() {
 
         // get a reference to our compass
-        rangeSensor = new UltrasonicDistanceSensor(hardwareMap.get(AnalogInput.class, "vdist"));
+        rangeSensor = new UltrasonicDistanceSensor(hardwareMap.get(AnalogInput.class, "vdist1"));
         // wait for the start button to be pressed
         waitForStart();
 

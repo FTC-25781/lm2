@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class IntakeClawSubsystem {
 
-    private final Servo clawServo;
-    private final Servo orientationServo;
+    public final Servo clawServo;
+    public final Servo orientationServo;
 
     private static final double CLAW_OPEN_POS = 0.77;
     private static final double CLAW_CLOSED_POS = 1.0;

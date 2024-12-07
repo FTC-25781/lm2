@@ -52,9 +52,12 @@ public class LimitSwitchTest extends LinearOpMode {
     private DcMotor hsmot = null;
     private DcMotor rightDrive = null;
     private DcMotor leftDrive = null;
+    private Robot robot;
 
     @Override
     public void runOpMode() {
+
+        robot = new Robot(hardwareMap, telemetry);
 
         // get a reference to our touchSensor object.
         depositLmtSw = hardwareMap.get(DigitalChannel.class, "dpltsw");
@@ -121,6 +124,10 @@ public class LimitSwitchTest extends LinearOpMode {
                 leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 //
+            if(gamepad2.a) {
+                robot.depositSlide.retractDepositMainSlide();
+            }
+
             if(gamepad1.a) {
                 hsmot.setTargetPosition(-4994);
                 hsmot.setMode(DcMotor.RunMode.RUN_TO_POSITION);

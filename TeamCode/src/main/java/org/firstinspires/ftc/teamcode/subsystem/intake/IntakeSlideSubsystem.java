@@ -3,16 +3,24 @@ package org.firstinspires.ftc.teamcode.subsystem.intake;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import java.util.concurrent.TimeUnit;
 
 public class IntakeSlideSubsystem {
 
     public final DcMotor slideMotor;
     private final DigitalChannel intakeLimitSwitch;
+    public final Telemetry telemetry;
 
     private static final int SLIDE_EXTEND_POS = 800;
     private static final double SLIDE_EXTEND_SPEED = 0.5;
 
-    public IntakeSlideSubsystem(HardwareMap hardwareMap) {
+    public IntakeSlideSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         slideMotor = hardwareMap.get(DcMotor.class, "hsmot");
         intakeLimitSwitch = hardwareMap.get(DigitalChannel.class, "inltsw");
 
@@ -27,9 +35,15 @@ public class IntakeSlideSubsystem {
     }
 
     public void extendMainSlide() {
-        slideMotor.setTargetPosition(SLIDE_EXTEND_POS);
-        slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        slideMotor.setPower(SLIDE_EXTEND_SPEED);
+        ElapsedTime timer = new ElapsedTime();
+        timer.reset();
+        slideMotor.setPower(-0.8);
+
+        while (timer.time(TimeUnit.MILLISECONDS) > 1500) {
+            telemetry.addData("Distance: ", slideMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        slideMotor.setPower(0);
     }
 
     public void retractMainSlide() {
@@ -43,6 +57,7 @@ public class IntakeSlideSubsystem {
     private void stopAndResetSlide() {
         slideMotor.setPower(0);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     private double clampMotorPower(double power) {

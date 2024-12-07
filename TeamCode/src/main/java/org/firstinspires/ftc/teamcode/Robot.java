@@ -28,10 +28,10 @@ public class Robot {
         this.telemetry = telemetry;
 
         intakeV4B = new IntakeV4BSubsystem(hardwareMap);
-        intakeSlide = new IntakeSlideSubsystem(hardwareMap);
+        intakeSlide = new IntakeSlideSubsystem(hardwareMap, telemetry);
         intakeClaw = new IntakeClawSubsystem(hardwareMap);
         depositV4B = new DepositV4BSubsystem(hardwareMap);
-        depositSlide = new DepositSlideSubsystem(hardwareMap);
+        depositSlide = new DepositSlideSubsystem(hardwareMap, telemetry);
         depositClaw = new DepositClawSubsystem(hardwareMap);
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
     }

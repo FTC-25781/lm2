@@ -6,9 +6,9 @@ import org.firstinspires.ftc.teamcode.subsystem.Subsystem;
 
 public class DepositClawSubsystem implements Subsystem {
 
-    private final Servo clawServo;
+    public final Servo clawServo;
 
-    private static final double CLAW_OPEN_POS = 0.3;
+    private static final double CLAW_OPEN_POS = 0.4;
     private static final double CLAW_CLOSED_POS = 0.55;
 
     public DepositClawSubsystem(HardwareMap hardwareMap) {

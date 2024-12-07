@@ -19,7 +19,16 @@ public class UltrasonicDistanceSensor implements DistanceSensor {
 
     @Override
     public double getDistance(DistanceUnit unit) {
-        double inches = (analog.getVoltage() * 312.5)/2.54*1.6857; // what is this conversion lmaoo
+        double inches=0;
+        double temp=0;
+
+        for(int i=0; i<11; i++) {
+            inches = (analog.getVoltage() * 312.5) / 2.54 * 1.6857;
+            temp = (temp + inches)/2;
+        }
+
+        inches = temp;
+
         switch (unit) {
             case INCH:
                 return inches;

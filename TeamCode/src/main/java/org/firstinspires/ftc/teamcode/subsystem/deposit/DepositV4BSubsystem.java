@@ -6,8 +6,8 @@ import org.firstinspires.ftc.teamcode.subsystem.Subsystem;
 
 public class DepositV4BSubsystem implements Subsystem {
 
-    private final Servo wristServo1;
-    private final Servo wristServo2;
+    public final Servo wristServo1;
+    public final Servo wristServo2;
 
     private static final double SPECIMEN_DROP = 0;
     private static final double DROP = 1.0;
