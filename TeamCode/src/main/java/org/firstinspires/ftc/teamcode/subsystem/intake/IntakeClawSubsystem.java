@@ -28,15 +28,19 @@ public class IntakeClawSubsystem {
 
     // Increases orientation by 10 degrees, capping at 90 degrees
     public void setOrientationIncrease() {
-        currentOrientation = Math.min(currentOrientation + 10.0, 90.0);
-        double servoPosition = currentOrientation / 180.0;
-        orientationServo.setPosition(clamp(servoPosition));
+        if (currentOrientation < 90.0) {
+            currentOrientation += 10.0;
+            double servoPosition = currentOrientation / 180.0;
+            orientationServo.setPosition(orientationClamp(servoPosition));
+        }
     }
 
     public void setOrientationDecrease() {
-        currentOrientation = Math.min(currentOrientation - 10.0, 90.0);
-        double servoPosition = currentOrientation / 180.0;
-        orientationServo.setPosition(orientationClamp(servoPosition));
+        if (currentOrientation > 0) {
+            currentOrientation -= 10.0;
+            double servoPosition = currentOrientation / 180.0;
+            orientationServo.setPosition(orientationClamp(servoPosition));
+        }
     }
 
     // Opens the claw to a pre-defined position
@@ -47,11 +51,6 @@ public class IntakeClawSubsystem {
     // Closes the claw to a pre-defined position
     public void closeClaw() {
         clawServo.setPosition(CLAW_CLOSED_POS);
-    }
-
-    // Clamps a value between 0.0 and 1.0 to ensure valid servo positions
-    private double clamp(double value) {
-        return Math.max(0.0, Math.min(1.0, value));
     }
 
     private double orientationClamp(double value) {
