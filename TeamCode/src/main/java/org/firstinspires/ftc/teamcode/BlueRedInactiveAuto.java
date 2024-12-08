@@ -63,20 +63,17 @@ public class BlueRedInactiveAuto extends LinearOpMode {
 
 
         Action bluered2 = drive.actionBuilder(new Pose2d(63.32,19.15, 0))
-                .strafeToLinearHeading(new Vector2d(90.72,45.70), 0)
-                .strafeToLinearHeading(new Vector2d(89.92,3.49), 0)
-                .strafeToLinearHeading(new Vector2d(115.20,1.84),0)
-                .strafeToLinearHeading(new Vector2d(112.19,-8.11),0)
-                .strafeToLinearHeading(new Vector2d(67.56,-7.30),0)
-                .strafeToLinearHeading(new Vector2d(77.95,-7.70),0)
-                .strafeToLinearHeading(new Vector2d(86.5,39.45),0)//
-                .strafeToLinearHeading(new Vector2d(60.56,-7.30),0)
-//                .strafeToLinearHeading(new Vector2d(75.95,-7.70),0)
-                .strafeToLinearHeading(new Vector2d(84.88,33.39),0)//
-                .strafeToLinearHeading(new Vector2d(60.56,-7.30),0)
-//                .strafeToLinearHeading(new Vector2d(75.95,-7.70),0)
-                .strafeToLinearHeading(new Vector2d(84.55,32.68),0)//
-                .strafeToLinearHeading(new Vector2d(60.39,-10.62),0)
+
+                .strafeToLinearHeading(new Vector2d(91.81,3.16), 0)
+                .strafeToLinearHeading(new Vector2d(111.13,2.87), 0)
+                .strafeToLinearHeading(new Vector2d(110.01,-6.24), 0)
+                .strafeToLinearHeading(new Vector2d(69.92,-4.46), 0)
+                .strafeToLinearHeading(new Vector2d(109.97,-5.29), 0)
+                .strafeToLinearHeading(new Vector2d(110.64,-16.21), 0)
+                .strafeToLinearHeading(new Vector2d(69.73,-15.41), 0)
+                .strafeToLinearHeading(new Vector2d(111.23,-15.49), 0)
+                .strafeToLinearHeading(new Vector2d(110.56,-21.25), 0)
+                .strafeToLinearHeading(new Vector2d(68.25,-21.83), 0)
                 .build();
 ////
 //

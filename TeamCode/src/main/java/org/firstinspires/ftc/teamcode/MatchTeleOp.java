@@ -33,8 +33,8 @@ public class MatchTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             // Set drive powers based on gamepad input
             drive.setDrivePowers(new PoseVelocity2d(
-                    new Vector2d(gamepad1.left_stick_x, gamepad1.left_stick_y),
-                    gamepad1.right_stick_x
+                    new Vector2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x),
+                    -gamepad1.right_stick_x
             ));
 
             // Update the robot's pose estimate

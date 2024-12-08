@@ -21,10 +21,9 @@ public class DepositSlideSubsystem {
     public UltrasonicDistanceSensor rangeSensor;
     public DepositV4BSubsystem depositV4B;
 
-    private static final int SLIDE_EXTEND_POS = 10000;
-    private static final int SLIDE_RETRACT_POS = 1000;
-    private static final double SLIDE_EXTEND_SPEED = 0.5;
-    private static final double MIN_SPEED = 0.1;
+    private static final int SLIDE_EXTEND_POS = 10500;
+    private static final int SLIDE_RETRACT_POS = 2000;
+
     public final Telemetry telemetry;
 
     public DepositSlideSubsystem(HardwareMap hardwareMap, Telemetry telemetry) {
@@ -59,34 +58,45 @@ public class DepositSlideSubsystem {
     }
 
     public void extendDepositMainSlide() {
-        ElapsedTime timer = new ElapsedTime();
-        timer.reset();
-        verticalSlideMotor.setPower(0.8);
-        verticalSlideMotor2.setPower(0.8);
+        verticalSlideMotor.setTargetPosition(SLIDE_EXTEND_POS);
+        verticalSlideMotor2.setTargetPosition(SLIDE_EXTEND_POS);
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (rangeSensor.getDistance(DistanceUnit.INCH) < 42) {
-            telemetry.addData("Distance: ", rangeSensor.getDistance(DistanceUnit.INCH));
-            telemetry.update();
-            if (timer.time(TimeUnit.MILLISECONDS) > 1500) {
-                depositV4B.setWristSpecimenDropPosition();
-            }
+        verticalSlideMotor.setPower(1);
+        verticalSlideMotor2.setPower(1);
+
+        while (verticalSlideMotor.isBusy() && verticalSlideMotor2.isBusy()) {
+          telemetry.addData("current position: ", verticalSlideMotor.getCurrentPosition());
+          telemetry.update();
         }
+
         verticalSlideMotor.setPower(0);
         verticalSlideMotor2.setPower(0);
+
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void retractDepositMainSlide() {
-        ElapsedTime timer = new ElapsedTime();
-        timer.reset();
-        verticalSlideMotor.setPower(-0.8);
-        verticalSlideMotor2.setPower(-0.8);
+        verticalSlideMotor.setTargetPosition(SLIDE_RETRACT_POS);
+        verticalSlideMotor2.setTargetPosition(SLIDE_RETRACT_POS);
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (rangeSensor.getDistance(DistanceUnit.INCH) > 16.50) {
-            telemetry.addData("Distance: ", rangeSensor.getDistance(DistanceUnit.INCH));
+        verticalSlideMotor.setPower(-1);
+        verticalSlideMotor2.setPower(-1);
+
+        while (verticalSlideMotor.isBusy() && verticalSlideMotor2.isBusy()) {
+            telemetry.addData("current position: ", verticalSlideMotor.getCurrentPosition());
             telemetry.update();
         }
+
         verticalSlideMotor.setPower(0);
         verticalSlideMotor2.setPower(0);
+
+        verticalSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        verticalSlideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 

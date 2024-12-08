@@ -95,7 +95,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
                         },
                         new SleepAction(1)
                 ))
-                .strafeToLinearHeading(new Vector2d(85.5,47.95), 0) //first sample
+                .strafeToLinearHeading(new Vector2d(86.5,47.95), 0) //first sample
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.intakeSlide.extendMainSlide();

@@ -54,7 +54,7 @@ public class AutoTest2 extends LinearOpMode {
 
         // MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-        drive = new MecanumDrive(hardwareMap, new Pose2d(63.32, 19.15, 0));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(63.32,19.15, 0));
 
 
         runtime.reset();
