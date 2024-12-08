@@ -77,7 +77,6 @@ public class BlueRedInactiveAuto extends LinearOpMode {
                 .build();
 ////
 //
-
         Actions.runBlocking(new SequentialAction(
 
                 bluered2
