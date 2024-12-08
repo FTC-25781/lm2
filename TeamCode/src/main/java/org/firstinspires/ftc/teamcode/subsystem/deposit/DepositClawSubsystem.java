@@ -9,7 +9,7 @@ public class DepositClawSubsystem implements Subsystem {
     public final Servo clawServo;
 
     private static final double CLAW_OPEN_POS = 0.4;
-    private static final double CLAW_CLOSED_POS = 0.55;
+    private static final double CLAW_CLOSED_POS = 0.7;
 
     public DepositClawSubsystem(HardwareMap hardwareMap) {
         clawServo = hardwareMap.get(Servo.class, "dclsrv");
