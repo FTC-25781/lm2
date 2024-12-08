@@ -61,7 +61,7 @@ public class ServoTeleOp extends LinearOpMode {
             orientation.setPosition(gamepad2.left_stick_y);
 
             if (gamepad2.dpad_left) {
-                depositClawServo.setPosition(0.55);
+                depositClawServo.setPosition(0);
             }
 
             if (gamepad2.dpad_right) {

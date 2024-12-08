@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -46,6 +50,8 @@ public class MatchTeleOp extends LinearOpMode {
 
             // Send telemetry data
             sendTelemetry();
+
+            autoTransfer();;
 
             // Perform robot updates
             robot.update();
@@ -104,8 +110,8 @@ public class MatchTeleOp extends LinearOpMode {
         if (gamepad2.x) robot.intakeV4B.setWristPickPosition();
         if (gamepad2.y) robot.intakeV4B.setWristDropPosition();
         if (gamepad2.right_stick_button) robot.intakeV4B.setWristDefaultPosition();
-        if (gamepad2.left_bumper) robot.intakeClaw.setOrientationIncrease();
-        if (gamepad2.right_bumper) robot.intakeClaw.setOrientationDecrease();
+        if (gamepad2.left_trigger > 0.5) robot.intakeClaw.setOrientationIncrease();
+        if (gamepad2.right_trigger > 0.5) robot.intakeClaw.setOrientationDecrease();
     }
 
     private void updateDepositControls() {
@@ -113,14 +119,33 @@ public class MatchTeleOp extends LinearOpMode {
         if (gamepad2.dpad_left) robot.depositClaw.closeDepositClaw();
 
         robot.depositSlide.manualExtension(gamepad2.left_stick_y);
-
-        if (gamepad1.dpad_up) robot.depositSlide.extendDepositMainSlide();
-        if (gamepad1.dpad_right) robot.depositSlide.retractDepositMainSlide();
+//
+//        if (gamepad1.dpad_up) robot.depositSlide.extendDepositMainSlide();
+//        if (gamepad1.dpad_right) robot.depositSlide.retractDepositMainSlide();
 
         if (gamepad2.dpad_down) robot.depositV4B.setWristPickPosition();
         if (gamepad2.dpad_up) robot.depositV4B.setWristDropPosition();
         if (gamepad2.left_stick_button) robot.depositV4B.setWristSpecimenDropPosition();
     }
+
+    private void autoTransfer() {
+        if (gamepad1.a) {
+                        robot.depositClaw.openDepositClaw();
+                        sleep(1000);
+                        robot.depositSlide.retractDepositMainSlide();
+                        sleep(1500);
+                        robot.depositClaw.closeDepositClaw();
+                        sleep(1000);
+                        robot.intakeClaw.openClaw();
+                        sleep(1000);
+                        robot.depositSlide.extendDepositMainSlide();
+                        sleep(1500);
+                        robot.depositV4B.setWristDropPosition();
+                        sleep(1000);
+        }
+    }
+
+
 
     private void sendTelemetry() {
         telemetry.addData("Orientation Position", orientationPosition);

@@ -11,7 +11,7 @@ public class IntakeV4BSubsystem {
     private static final double POSITION_INCREMENT = 0.01;
     private static final int DELAY_MS = 20; // Delay between increments
 
-    private static final double DEFAULT = 0.2;
+    private static final double DEFAULT = 0.15;
     private static final double DROP = 0.38;
     private static final double PICKUP = 0.05;
 
