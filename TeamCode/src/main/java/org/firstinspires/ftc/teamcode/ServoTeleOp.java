@@ -56,7 +56,7 @@ public class ServoTeleOp extends LinearOpMode {
                 iservo1.setPosition(0.4);
                 iservo2.setPosition(0.4);
             }
-
+//
 //            intakeClawServo.setPosition(gamepad2.left_stick_y);
             orientation.setPosition(gamepad2.left_stick_y);
 
