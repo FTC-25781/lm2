@@ -51,7 +51,7 @@ public class MatchTeleOp extends LinearOpMode {
             // Send telemetry data
             sendTelemetry();
 
-            autoTransfer();;
+//            autoTransfer();;
 
             // Perform robot updates
             robot.update();
@@ -115,8 +115,8 @@ public class MatchTeleOp extends LinearOpMode {
     }
 
     private void updateDepositControls() {
-        if (gamepad2.dpad_right) robot.depositClaw.openDepositClaw();
-        if (gamepad2.dpad_left) robot.depositClaw.closeDepositClaw();
+        if (gamepad2.right_bumper) robot.depositClaw.openDepositClaw();
+        if (gamepad2.left_bumper) robot.depositClaw.closeDepositClaw();
 
         robot.depositSlide.manualExtension(gamepad2.left_stick_y);
 //
@@ -128,22 +128,22 @@ public class MatchTeleOp extends LinearOpMode {
         if (gamepad2.left_stick_button) robot.depositV4B.setWristSpecimenDropPosition();
     }
 
-    private void autoTransfer() {
-        if (gamepad1.a) {
-                        robot.depositClaw.openDepositClaw();
-                        sleep(1000);
-                        robot.depositSlide.retractDepositMainSlide();
-                        sleep(1500);
-                        robot.depositClaw.closeDepositClaw();
-                        sleep(1000);
-                        robot.intakeClaw.openClaw();
-                        sleep(1000);
-                        robot.depositSlide.extendDepositMainSlide();
-                        sleep(1500);
-                        robot.depositV4B.setWristDropPosition();
-                        sleep(1000);
-        }
-    }
+//    private void autoTransfer() {
+//        if (gamepad1.a) {
+//                        robot.depositClaw.openDepositClaw();
+//                        sleep(1000);
+//                        robot.depositSlide.retractDepositMainSlide();
+//                        sleep(1500);
+//                        robot.depositClaw.closeDepositClaw();
+//                        sleep(1000);
+//                        robot.intakeClaw.openClaw();
+//                        sleep(1000);
+//                        robot.depositSlide.extendDepositMainSlide();
+//                        sleep(1500);
+//                        robot.depositV4B.setWristDropPosition();
+//                        sleep(1000);
+//        }
+//    }
 
 
 

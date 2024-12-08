@@ -52,7 +52,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
                         },
                         new SleepAction(1)
                 ))
-                .strafeToLinearHeading(new Vector2d(72.0, 54.7), -45) //first time going under basket
+                .strafeToLinearHeading(new Vector2d(72.0, 54.7), Math.toRadians(-43)) //first time going under basket
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.depositClaw.openDepositClaw();
@@ -95,7 +95,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
                         },
                         new SleepAction(1)
                 ))
-                .strafeToLinearHeading(new Vector2d(86.5,47.95), 0) //first sample
+                .strafeToLinearHeading(new Vector2d(90.5,47.95), 0) //first sample
                 .stopAndAdd(new SequentialAction(
                         (p) -> {
                             robot.intakeSlide.extendMainSlide();
@@ -114,7 +114,7 @@ public class BlueRedActiveAuto extends LinearOpMode {
                         },
                         new SleepAction(1),
                         (p) -> {
-                            robot.intakeV4B.setWristPickPosition();
+                            robot.intakeV4B.setWristPickAutoPosition();
                             telemetry.addData("In Pick:", robot.intakeV4B.wristServo1.getPosition());
                             telemetry.update();
                             return false;

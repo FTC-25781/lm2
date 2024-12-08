@@ -14,6 +14,7 @@ public class IntakeV4BSubsystem {
     private static final double DEFAULT = 0.15;
     private static final double DROP = 0.38;
     private static final double PICKUP = 0.05;
+    private static final double AUTO_PICKUP = 0.07;
 
     public IntakeV4BSubsystem(HardwareMap hardwareMap) {
         wristServo1 = hardwareMap.get(Servo.class, "wsrv1");
@@ -32,6 +33,9 @@ public class IntakeV4BSubsystem {
 
     public void setWristPickPosition() {
         smoothSetWristPosition(PICKUP, PICKUP);
+    }
+    public void setWristPickAutoPosition() {
+        smoothSetWristPosition(AUTO_PICKUP, AUTO_PICKUP);
     }
 
     private void smoothSetWristPosition(double targetPos1, double targetPos2) {
